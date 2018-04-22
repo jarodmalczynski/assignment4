@@ -19,19 +19,27 @@ Star Wars - Maze Runner
 const PROMPT = require (`readline-sync`);
 
 let continueResponse;
-let menu, list;
+let menu, list, maze, star;
 let newMovie = [];
 
 //totalStarRating, totalMazeRating, numberOfStarRatings, numberOfMazeRatings, StarAverage, MazeAverage;
 
 function main() {
+    setThings();
     setContinueResponse();
     while (continueResponse === 1) {
         setMenu();
         switch (menu) {
-            case 1: seeList(); setReview();
+            case 1: seeList();
+            switch (list) {
+                case 1: rateMaze();
+                    break;
+                case 2: rateStar();
+                    break;
+                default: console.log(`! ERROR !`);
+            }
                 break;
-            case 2: setNewMovie(); setNewReview();
+            case 2: setNewMovie();
                 break;
             case 3: setRated();
                 break;
@@ -42,6 +50,15 @@ function main() {
 }
 
 main();
+
+function setThings() {
+    newRatings = 0;
+    mazeRatings = 0;
+    starRatings = 0;
+    yourMovie = 0;
+    mazeMovie = 0;
+    starMovie = 0;
+}
 
 function setContinueResponse() {
     if (continueResponse === 1 || continueResponse === 0) {
@@ -70,58 +87,64 @@ function setMenu() {
 
 function seeList() {
     list = -1;
-    while (list !== 1 && list !== 2 && list !== 3 && list !== 4) {
+    while (list !== 1 && list !== 2) {
         list = Number(PROMPT.question(
             `\tSelect a movie to review:
             \t\t1) Maze Runner
-            \t\t2) Star Wars
-            \t\t3) 
-            \t\t4) 
+            \t\t2) Star Wars 
             \t\tCHOOSE: `
         ));
     }
 }
 
+function rateMaze() {
+    maze = Number(PROMPT.question(`\nHow would you rate the movie Maze Runner? [1-5]: `));
+    while (maze !== 1 && maze !== 2 && maze !== 3 && maze !== 4 && maze !== 5) {
+        console.log(`${maze} is an incorrect value. Please try again. `);
+        maze = Number(PROMPT.question(`\nHow would you rate the movie Maze Runner? [1-5]: `));
+    }
+    mazeMovie = maze + mazeMovie;
+    mazeRatings++
+}
+
+function rateStar() {
+    star = Number(PROMPT.question(`\nHow would you rate the movie Star Wars? [1-5]: `));
+    while (star !== 1 && star !== 2 && star !== 3 && star !== 4 && star !== 5) {
+        console.log(`${star} is an incorrect value. Please try again. `);
+        star = Number(PROMPT.question(`\nHow would you rate the movie Star Wars? [1-5]: `));
+    }
+    starMovie = star + starMovie;
+    starRatings++
+}
+
 function setNewMovie() {
     for (let i = 0; i < 1; i++) {
         newMovie[i] = [];
-        console.log(`\n ... :`);
+        console.log(`\nnewMovie ${i + 1}:`);
         while (! newMovie[i][0] || !/[a-zA-Z -]{1,30}$/.test(newMovie[i][0])) {
             newMovie[i][0] = PROMPT.question(`Please enter the name of yout movie. :`);
             if (! /^[a-zA-Z -]{1,30}$/.test(newMovie[i][0])) {
                 console.log(`${newMovie[i][0]} is invalid. Please try again.`);
             }
         }
+
         while (! newMovie[i][1] || !/[a-zA-Z -]{1,30}$/.test(newMovie[i][1])) {
             newMovie[i][1] = PROMPT.question(`On a scale of 1-5 with 5 being the best, how would you rate this movie? :`);
-            if (! /^[a-zA-Z -]{1,30}$/.test(newMovie[i][1])) {
+            if ((newMovie[i][1]) !== 1 && star !== 2 && star !== 3 && star !== 4 && star !== 5) {
                 console.log(`${newMovie[i][1]} is invalid. Please try again.`);
+                newMovie[i][1] = PROMPT.question(`On a scale of 1-5 with 5 being the best, how would you rate this movie? :`);
             }
+            yourMovie = (newMovie[i][1]) + yourMovie;
+            newRatings++
         }
-        while (! newMovie[i][2] || !/[a-zA-Z -]{1,30}$/.test(newMovie[i][2])) {
-            newMovie[i][2] = PROMPT.question(` ??? :`);
-            if (! /^[a-zA-Z -]{1,30}$/.test(newMovie[i][2])) {
-                console.log(`${newMovie[i][2]} is invalid. Please try again.`);
-            }
-        }
-        while (! newMovie[i][3] || !/[a-zA-Z -]{1,30}$/.test(newMovie[i][3])) {
-            newMovie[i][3] = PROMPT.question(` ??? :`);
-            if (! /^[a-zA-Z -]{1,30}$/.test(newMovie[i][3])) {
-                console.log(`${newMovie[i][3]} is invalid. Please try again.`);
-            }
-        }
-        while (! newMovie[i][4] || !/[a-zA-Z -]{1,30}$/.test(newMovie[i][4])) {
-            newMovie[i][4] = PROMPT.question(` ??? :`);
-            if (! /^[a-zA-Z -]{1,30}$/.test(newMovie[i][4])) {
-                console.log(`${newMovie[i][4]} is invalid. Please try again.`);
-            }
-        }
-
-
-
     }
+
 }
 
+
 function setRated() {
+    mazeAverage = mazeMovie / mazeRatings;
+    starAverage = starMovie / starRatings;
+    newAverage = yourMovie / newRating;
 
 }
